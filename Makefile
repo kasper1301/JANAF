@@ -1,9 +1,9 @@
-all: downloadJANAFtables.py download delete
+all: downloadJANAFtables.py deleteEmptyFiles.sh download delete
 
 download: downloadJANAFtables.py
-	python downloadJANAFtables.py
+	./downloadJANAFtables
 	
-delete: deleteEmptyFiles.sh download
+delete: deleteEmptyFiles.sh
 	sh deleteEmptyFiles.sh
 	
 clean:

@@ -1,0 +1,36 @@
+#!/usr/bin/python
+
+def downloadJANAFtables(letters = ascii_uppercase, \
+                        numbers = range(1,1000), \
+                        url     = "http://kinetics.nist.gov/janaf/html/", \
+                        folder  = "txt/"):
+    from string import ascii_uppercase
+    from urllib import urlretrieve
+    '''
+    A function that downloads the JANAF table for every component in the 
+    database. 
+    Input:
+        [letters]:      A list/string of identifying letters in the url of the 
+                        components. 
+                        Defaults to [A-Z]
+        [numbers]:      A list of identifying numbers in the url of the 
+                        components.
+                        Defaults to [1-999]
+        [url]:          The url to the JANAF tables
+                        Defaults to "http://kinetics.nist.gov/janaf/html/"
+        [folder]:       The name of the folder where the html files are to be
+                        stored.
+                        Defaults to "txt/"
+    '''
+
+    for letter in letters:
+        for number in numbers:
+            ending      = letter + "-%03i"%int(number) + ".txt"     # URL ending
+            currentURL  = url + ending                                # Full URL
+            txtFile    = open(folder+ending, 'w')             # File for writing
+            urlretrieve(currentURL, folder+ending)                # Retrieve URL
+            txtFile.close()                                         # Close file
+            
+if __name__=='__main__':
+    import sys
+    downloadJANAFtables(sys.argv[1:])
