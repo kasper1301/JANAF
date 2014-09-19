@@ -35,7 +35,7 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
         txt.readline()                                     # Skip the third line
         
         csv = open(cpFolder + name + '.csv', 'w')                   # Create csv
-        csv.write('T[K], Cp[J K^{-1} mol^{-1}]\n')                # Write header
+        csv.write('T[K],Cp[J K^{-1} mol^{-1}]\n')                 # Write header
         
         lines   = txt.readlines()                           # Read all the lines
         
@@ -44,7 +44,7 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
                 data            = line.split()              # Split into columns
                 temperature     = data[0]                  # Extract temperature
                 heatCapacity    = data[1]                # Extract heat capacity
-                csv.write(temperature + ', ' +                   # Write to file
+                csv.write(temperature + ',' +                    # Write to file
                           heatCapacity + '\n')  
                 if temperature == '298.15':               # Get reference values
                     refEnthalpy = data[5]      # Reference enthalpy of formation
@@ -53,14 +53,12 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
                 pass
         csv.close()                                             # Close the file
         csv = open(cpFolder + name + '_ref.csv', 'w')# File for reference values
-        csv.write('Tref[K], Sref[J K^{-1} mol^{-1}], Href[J mol^{-1}]\n')
-        csv.write('298.15, ' + refEntropy +             # Write reference values
-                  ', ' + str(float(refEnthalpy)*1000) + '\n')
+        csv.write('Tref[K],Sref[J K^{-1} mol^{-1}],Href[J mol^{-1}]\n')
+        csv.write('298.15,' + refEntropy +             # Write reference values
+                  ',' + str(float(refEnthalpy)*1000) + '\n')
         txt.seek(0)                          # Jump to the beginning of the file
         extractAllData.extractAll(lines, name)       # Write all the data to csv
         txt.close()
-
-
 
 if __name__=='__main__':
     extractHeatCapacity()

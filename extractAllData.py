@@ -11,8 +11,8 @@ def extractAll(linesOfData, componentName, dataFolder="data/"):
                         Defaults to "data/"
     '''
     csv     = open(dataFolder + componentName + '.csv', 'w')   # Create csv file
-    csv.write('T[K], Cp[J K^{-1} mol^{-1}], ' +               # Write the header
-              'S[J K^{-1} mol^{-1}], H[J mol^{-1}], G[J mol^{-1}]\n')
+    csv.write('T[K],Cp[J K^{-1} mol^{-1}],' +                 # Write the header
+              'S[J K^{-1} mol^{-1}],H[J mol^{-1}],G[J mol^{-1}]\n')
     for line in linesOfData:                        # Loop through all the lines
         try:
             data = line.split()
@@ -21,16 +21,16 @@ def extractAll(linesOfData, componentName, dataFolder="data/"):
             entropy         = data[2]
             enthalpy        = data[5]
             gibbsEnergy     = data[6]
-            csv.write(temperature + ', ' +
-                      heatCapacity + ', ' +
-                      entropy + ', ' +
-                      str(float(enthalpy)*1000) + ', ' +
+            csv.write(temperature + ',' +
+                      heatCapacity + ',' +
+                      entropy + ',' +
+                      str(float(enthalpy)*1000) + ',' +
                       str(float(gibbsEnergy)*1000) + '\n')
         except ValueError:
-            csv.write(temperature + ', ' +
-                      heatCapacity + ', ' +
-                      entropy + ', ' +
-                      'NaN, ' +
+            csv.write(temperature + ',' +
+                      heatCapacity + ',' +
+                      entropy + ',' +
+                      'NaN,' +
                       'NaN\n')
         except IndexError:
             pass

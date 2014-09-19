@@ -1,4 +1,4 @@
-all: extract
+all: 
 
 download: downloadJANAFtables
 	./downloadJANAFtables
