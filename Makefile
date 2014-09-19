@@ -1,10 +1,13 @@
-all: downloadJANAFtables.py deleteEmptyFiles.sh download delete
+all: extract
 
-download: downloadJANAFtables.py
+download: downloadJANAFtables
 	./downloadJANAFtables
 	
-delete: deleteEmptyFiles.sh
-	sh deleteEmptyFiles.sh
+delete: deleteEmptyFiles
+	./deleteEmptyFiles
+	
+extract: extractHeatCapacity
+	./extractHeatCapacity
 	
 clean:
-	rm html/*
+	rm txt/*

@@ -1,4 +1,5 @@
-html/
 txt/
-csv/
+heatCapacity/
+data/
 *.tar.gz
+*.pyc

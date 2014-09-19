@@ -1,0 +1,5 @@
+#!/bin/bash
+# find all files in the txt folder
+# grep the files with the phrase 'requested resource is not available'
+# remove the files 
+find txt/* | xargs grep -l 'requested resource is not available' | xargs rm

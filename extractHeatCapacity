@@ -1,0 +1,66 @@
+#!/usr/bin/python
+
+def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
+    '''
+    A function that converts downloaded JANAF tables from text to CSV.
+    The function extracts the temperatures and the heat capacities and writes
+    them to a componentname.csv file. The reference entropy and enthalpy is also
+    extracted and written to componentname_ref.csv. Only SI units with no prefix
+    are used.
+    Input:
+        [txtFolder]:    The folder that contains the text files.
+                        Defaults to "txt/"
+        [cpFolder]:     The folder for the heat capacity output.
+                        Defaults to "heatCapacity/"
+    '''
+    from site import os
+    import extractAllData
+    txtFiles    = os.listdir(txtFolder)       # Get all the text files as a list
+    
+    for txtFile in txtFiles:
+        txt     = open(txtFolder + txtFile, 'r')                     # Open text
+        header  = txt.readline()                           # Read the first line
+        tmp     = header.split('\t')[0]                   # Get the first column
+        name    = ""
+        
+        for symbol in tmp:
+            if symbol.isalnum() or symbol in '-,()':
+                name += symbol
+            elif symbol.isspace():
+                name += '_'
+        
+        print 'Component: ' + name
+        
+        txt.readline()                                    # Skip the second line
+        txt.readline()                                     # Skip the third line
+        
+        csv = open(cpFolder + name + '.csv', 'w')                   # Create csv
+        csv.write('T[K], Cp[J K^{-1} mol^{-1}]\n')                # Write header
+        
+        lines   = txt.readlines()                           # Read all the lines
+        
+        for line in lines:
+            try:
+                data            = line.split()              # Split into columns
+                temperature     = data[0]                  # Extract temperature
+                heatCapacity    = data[1]                # Extract heat capacity
+                csv.write(temperature + ', ' +                   # Write to file
+                          heatCapacity + '\n')  
+                if temperature == '298.15':               # Get reference values
+                    refEnthalpy = data[5]      # Reference enthalpy of formation
+                    refEntropy  = data[2]                    # Reference entropy
+            except IndexError:
+                pass
+        csv.close()                                             # Close the file
+        csv = open(cpFolder + name + '_ref.csv', 'w')# File for reference values
+        csv.write('Tref[K], Sref[J K^{-1} mol^{-1}], Href[J mol^{-1}]\n')
+        csv.write('298.15, ' + refEntropy +             # Write reference values
+                  ', ' + str(float(refEnthalpy)*1000) + '\n')
+        txt.seek(0)                          # Jump to the beginning of the file
+        extractAllData.extractAll(lines, name)       # Write all the data to csv
+        txt.close()
+
+
+
+if __name__=='__main__':
+    extractHeatCapacity()
