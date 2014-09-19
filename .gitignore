@@ -1,5 +1,5 @@
-txt/
-heatCapacity/
-data/
+*.txt
+*.csv
 *.tar.gz
 *.pyc
+*.pdf

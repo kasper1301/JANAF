@@ -20,15 +20,15 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
     for txtFile in txtFiles:
         txt     = open(txtFolder + txtFile, 'r')                     # Open text
         header  = txt.readline()                           # Read the first line
-        tmp     = header.split('\t')[0]                   # Get the first column
+        #tmp     = header.split('\t')[0]                   # Get the first column
         name    = ""
         
-        for symbol in tmp:
+        for symbol in header:
             if symbol.isalnum() or symbol in '-,()':
                 name += symbol
             elif symbol.isspace():
                 name += '_'
-        
+        name = name.rstrip('_')
         print 'Component: ' + name
         
         txt.readline()                                    # Skip the second line
@@ -52,7 +52,7 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
             except IndexError:
                 pass
         csv.close()                                             # Close the file
-        csv = open(cpFolder + name + '_ref.csv', 'w')# File for reference values
+        csv = open(cpFolder + "ref/" + name + '.csv', 'w')# File for reference values
         csv.write('Tref[K],Sref[J K^{-1} mol^{-1}],Href[J mol^{-1}]\n')
         csv.write('298.15,' + refEntropy +             # Write reference values
                   ',' + str(float(refEnthalpy)*1000) + '\n')

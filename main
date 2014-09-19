@@ -1,0 +1,36 @@
+#!/usr/bin/julia
+include("calculatePolynomialCoefficients.jl")         # Function to calculate cp
+
+createPlot = false
+
+heatCapacityFolder  = "heatCapacity/"                  # Folder of the csv files
+files               = ["Oxygen_(O2)_O2(ref).csv",               # csv file names
+                       "Nitrogen_(N2)_N2(ref).csv",
+                       "Carbon_Dioxide_(CO2)_C1O2(g).csv",
+                       "Carbon_Monoxide_(CO)_C1O1(g).csv",
+                       "Nitrogen_Oxide_(NO2)_N1O2(g).csv",
+                       "Nitrogen_Oxide_(NO)_N1O1(g).csv",
+                       "Methane_(CH4)_C1H4(g).csv",
+                       "Hydrogen_(H2)_H2(ref).csv",
+                       "Water_(H2O)_H2O1(g).csv"]
+names               = ["O2",                                   # Component names
+                       "N2",
+                       "CO2",
+                       "CO",
+                       "NO2",
+                       "NO",
+                       "CH4",
+                       "H2",
+                       "H2O"]
+                       
+if createPlot
+    using PyPlot
+    # Configure global plot settings
+    rc("text", usetex=true)
+    rc("font", family="serif")
+    rc("text.latex", preamble="\\usepackage{mhchem}")
+end
+
+cpCoeffs = calculatePolynomialCoefficients(files, names, heatCapacityFolder, 20,
+                                           createPlot)
+

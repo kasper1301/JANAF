@@ -1,4 +1,7 @@
-all: 
+all: run
+
+run: main vandermondeMatrix.jl calculatePolynomialCoefficients.jl polyFitHeatCapacity.jl
+	./main
 
 download: downloadJANAFtables
 	./downloadJANAFtables
