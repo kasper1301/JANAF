@@ -21,8 +21,8 @@ def extractAll(linesOfData, componentName, refValues, dataFolder="data/"):
             heatCapacity    = data[1]        # Heat capacity [J K^{-1} mol^{-1}]
             entropy         = data[2]              # Entropy [J K^{-1} mol^{-1}]
             enthalpy        = float(data[4])*1000 + href # Enthalpy [J mol^{-1}]
-            gibbsEnergy     = -float(data[3])*       # Gibbs energy [J mol^{-1}]
-                               float(temperature) + enthalpy
+            gibbsEnergy     = -float(data[3]      # Gibbs energy [J mol^{-1}]
+                               ) * float(temperature) + href
             csv.write(temperature + ',' +                     # Write the values
                       heatCapacity + ',' +
                       entropy + ',' +

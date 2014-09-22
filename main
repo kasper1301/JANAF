@@ -15,13 +15,13 @@ componentNames = ["O2",                                        # Component names
                    "CH4",
                    "H2",
                    "H2O"]
+numComponents   = length(componentNames)
 createPlot      = true                          # flag to switch plotting on/off
-polynomialOrder = 20                          # Order of the polynomial in cp(T)
+polynomialOrder = 2                           # Order of the polynomial in cp(T)
 p_ref           = 1.0e5                                # Reference pressure [Pa]
 p               = p_ref                                          # Pressure [Pa]
 T               = linspace(100,6000,5000)                      # Temperature [K]
-x               = ones(length(componentNames),1) /
-                  length(componentNames)                        # Mole fractions
+x               = ones(numComponents,1)/numComponents           # Mole fractions
 
 # Folder and file names
 dataFolder          = "data/"                          # Folder of the csv files
@@ -46,7 +46,7 @@ end
 
 # Calculate the coefficients of the heat capacity polynomials
 # optionally plot the result
-cpCoeffs = calculatePolynomialCoefficients(files, names, dataFolder,
+cpCoeffs = calculatePolynomialCoefficients(files, componentNames, dataFolder,
                                            polynomialOrder, createPlot)
 
 # Extract the reference values
@@ -60,7 +60,7 @@ else
 end
 
 if createPlot
-    h_ig    = zeros(length(names),length(T))  # Ideal gas enthalpy [kJ mol^{-1}]
+    h_ig    = zeros(numComponents,length(T))  # Ideal gas enthalpy [kJ mol^{-1}]
     s_ig    = copy(h_ig)                 # Ideal gas entropy [J K^{-1} mol^{-1}]
     mu_ig   = copy(h_ig)            # Ideal gas chemical potential [kJ mol^{-1}]
 
@@ -75,7 +75,7 @@ if createPlot
     end
 
     # Plot the results for all the files
-    for i = 1:length(files)
+    for i = 1:numComponents
         # Import data
         data    = readdlm(string(dataFolder, files[i]),
                           ',', Float64; skipstart=1)
@@ -86,29 +86,31 @@ if createPlot
 
         figure(i)                                              # Generate figure
             subplot(311)                                  # Subplot for enthalpy
-                title("\\ce{$(names[i])}")                           # Add title
+                title("\\ce{$(componentNames[i])}")                  # Add title
                 plot(T_data, h_data, "kx")                           # Plot data
                 plot(T, h_ig[i,:]', "r")                # Plot calculated values
                 ylabel(                                            # Add y-label
-                        string("\$ h_\\ce{$(names[i])}^{\\mathrm{ig}}\\quad",
-                               "\\left[\\mathrm{kJ mol^{-1}}\\right]\$")
+                      string("\$ h_\\ce{$(componentNames[i])}^{\\mathrm{ig}}",
+                             "\\quad\\left[\\mathrm{kJ mol^{-1}}\\right]\$")
                       )
             subplot(312)                                   # Subplot for entropy
                 plot(T_data, s_data, "kx")                           # Plot data
                 plot(T, s_ig[i,:]', "r")                # Plot calculated values
                 ylabel(                                            # Add y-label
-                        string("\$ s_\\ce{$(names[i])}^{\\mathrm{ig}}\\quad",
-                               "\\left[\\mathrm{J K^{-1} mol^{-1}}\\right]\$")
+                      string("\$ s_\\ce{$(componentNames[i])}^{\\mathrm{ig}}",
+                             "\\quad\\left[\\mathrm{J K^{-1} mol^{-1}}",
+                             "\\right]\$")
                       )
             subplot(313)                        # Subplot for chemical potential
                 plot(T_data, mu_data, "kx")                          # Plot data
                 plot(T, mu_ig[i,:]', "r")               # Plot calculated values
                 ylabel(                                            # Add y-label
-                        string("\$ \\mu_\\ce{$(names[i])}^{\\mathrm{ig}}\\quad",
-                               "\\left[\\mathrm{kJ mol^{-1}}\\right]\$")
+                      string("\$ \\mu_\\ce{$(componentNames[i])}^",
+                             "{\\mathrm{ig}}\\quad",
+                             "\\left[\\mathrm{kJ mol^{-1}}\\right]\$")
                       )
             xlabel("\$T \\quad [\\mathrm{K}] \$")                  # Add x-label
-            savefig(string("fig/", names[i], "_h_s_mu.pdf"))          # Save pdf
+            savefig(string("fig/", componentNames[i], "_h_s_mu.pdf")) # Save pdf
             close()                                               # Close figure
     end
 end

@@ -99,7 +99,7 @@ function calculateIdealEntropy(T::Float64, T_ref::Float64, p, p_ref,
     =#
     s   = calculateIdealEntropy(T, T_ref, p , p_ref, # Entropy of each component
                                 s_ref, cpCoeffs)
-    s   = x'*(s + 8.314472*log(x/sum(x))
+    s   = x'*(s + 8.314472*log(x/sum(x)))
 end
 
 function calculateIdealPotential(T, T_ref, p, p_ref, h_ref, s_ref, cpCoeffs)
