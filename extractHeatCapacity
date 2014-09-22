@@ -17,29 +17,25 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
     import extractAllData
     txtFiles    = os.listdir(txtFolder)       # Get all the text files as a list
     
-    for txtFile in txtFiles:
+    for txtFile in txtFiles:                   # Loop through all the text files
         txt     = open(txtFolder + txtFile, 'r')                     # Open text
         header  = txt.readline()                           # Read the first line
-        #tmp     = header.split('\t')[0]                   # Get the first column
-        name    = ""
+        name    = ""                                      # Initialize file name
         
-        for symbol in header:
-            if symbol.isalnum() or symbol in '-,()':
-                name += symbol
-            elif symbol.isspace():
-                name += '_'
-        name = name.rstrip('_')
-        print 'Component: ' + name
-        
-        txt.readline()                                    # Skip the second line
-        txt.readline()                                     # Skip the third line
+        for symbol in header:                          # Loop through the header
+            if symbol.isalnum() or symbol in '-,()':      # Alphanumeric or -,()
+                name += symbol                              # Add symbol to name
+            elif symbol.isspace():                                  # Whitespace
+                name += '_'                             # Add underscore to name
+        name = name.rstrip('_')                      # Strip trailing underscore
+        print 'Component: ' + name                                  # Print name
         
         csv = open(cpFolder + name + '.csv', 'w')                   # Create csv
         csv.write('T[K],Cp[J K^{-1} mol^{-1}]\n')                 # Write header
         
-        lines   = txt.readlines()                           # Read all the lines
+        lines   = txt.readlines()[2:]    # Read all the lines (skip 2nd and 3rd)
         
-        for line in lines:
+        for line in lines:                              # Loop through the lines
             try:
                 data            = line.split()              # Split into columns
                 temperature     = data[0]                  # Extract temperature
@@ -49,16 +45,19 @@ def extractHeatCapacity(txtFolder="txt/", cpFolder="heatCapacity/"):
                 if temperature == '298.15':               # Get reference values
                     refEnthalpy = data[5]      # Reference enthalpy of formation
                     refEntropy  = data[2]                    # Reference entropy
-            except IndexError:
+            except IndexError:                # Catch index error and do nothing
                 pass
         csv.close()                                             # Close the file
-        csv = open(cpFolder + "ref/" + name + '.csv', 'w')# File for reference values
-        csv.write('Tref[K],Sref[J K^{-1} mol^{-1}],Href[J mol^{-1}]\n')
-        csv.write('298.15,' + refEntropy +             # Write reference values
+        csv = open("data/ref/" + name + '.csv', 'w') # File for reference values
+        csv.write('Tref[K],Sref[J K^{-1} mol^{-1}],' +            # Write header
+                  'Href[J mol^{-1}]\n')
+        csv.write('298.15,' + refEntropy +              # Write reference values
                   ',' + str(float(refEnthalpy)*1000) + '\n')
+        csv.close()                                             # Close the file
         txt.seek(0)                          # Jump to the beginning of the file
-        extractAllData.extractAll(lines, name)       # Write all the data to csv
-        txt.close()
+        refValues = {'h': float(refEnthalpy)*1000}            # Reference values
+        extractAllData.extractAll(lines, name, refValues) # Extract all the data
+        txt.close()                                             # Close txt file
 
 if __name__=='__main__':
     extractHeatCapacity()

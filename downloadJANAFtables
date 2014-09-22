@@ -22,14 +22,14 @@ def downloadJANAFtables(letters = ascii_uppercase, \
                         Defaults to "txt/"
     '''
 
-    for letter in letters:
-        for number in numbers:
+    for letter in letters:                  # Loop through all the input letters
+        for number in numbers:              # Loop through all the input numbers
             ending      = letter + "-%03i"%int(number) + ".txt"     # URL ending
             currentURL  = url + ending                                # Full URL
             txtFile    = open(folder+ending, 'w')             # File for writing
             try:
                 urlretrieve(currentURL, folder+ending)            # Retrieve URL
-            except Exception, err:
+            except Exception, err:                       # Catch and print error
                 print 'Error in file: ' + ending
                 print err
             txtFile.close()                                         # Close file

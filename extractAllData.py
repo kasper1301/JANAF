@@ -1,4 +1,4 @@
-def extractAll(linesOfData, componentName, dataFolder="data/"):
+def extractAll(linesOfData, componentName, refValues, dataFolder="data/"):
     '''
     A function that converts downloaded JANAF tables from text to CSV.
     The function extracts the temperatures, heat capacities, entropy, enthalpy 
@@ -13,27 +13,29 @@ def extractAll(linesOfData, componentName, dataFolder="data/"):
     csv     = open(dataFolder + componentName + '.csv', 'w')   # Create csv file
     csv.write('T[K],Cp[J K^{-1} mol^{-1}],' +                 # Write the header
               'S[J K^{-1} mol^{-1}],H[J mol^{-1}],G[J mol^{-1}]\n')
+    href    = refValues['h']           # Get the reference enthalpy [J mol^{-1}]
     for line in linesOfData:                        # Loop through all the lines
         try:
-            data = line.split()
-            temperature     = data[0]
-            heatCapacity    = data[1]
-            entropy         = data[2]
-            enthalpy        = data[5]
-            gibbsEnergy     = data[6]
-            csv.write(temperature + ',' +
+            data = line.split()                                 # Split the line
+            temperature     = data[0]                          # Temperature [K]
+            heatCapacity    = data[1]        # Heat capacity [J K^{-1} mol^{-1}]
+            entropy         = data[2]              # Entropy [J K^{-1} mol^{-1}]
+            enthalpy        = float(data[4])*1000 + href # Enthalpy [J mol^{-1}]
+            gibbsEnergy     = -float(data[3])*       # Gibbs energy [J mol^{-1}]
+                               float(temperature) + enthalpy
+            csv.write(temperature + ',' +                     # Write the values
                       heatCapacity + ',' +
                       entropy + ',' +
-                      str(float(enthalpy)*1000) + ',' +
-                      str(float(gibbsEnergy)*1000) + '\n')
-        except ValueError:
-            csv.write(temperature + ',' +
+                      str(enthalpy) + ',' +
+                      str(gibbsEnergy) + '\n')
+        except ValueError:                        # Catch value errors and write 
+            csv.write(temperature + ',' +    # NaN for enthalpy and gibbs energy
                       heatCapacity + ',' +
                       entropy + ',' +
                       'NaN,' +
                       'NaN\n')
-        except IndexError:
+        except IndexError:                    # Catch index error and do nothing
             pass
-        except:
+        except:                                   # Catch other errors and print
             print 'Error: ' + str(line) + ' for ' + componentName
-    csv.close()
+    csv.close()                                                     # Close file

@@ -11,9 +11,9 @@ function vandermondeMatrix(t, n)
          :  :   :           :
          1  tm  tm^2        tm^n]
     =#
-    tMatrix = ones(length(t), n+1)
+    tMatrix = ones(length(t), n+1)                       # Initialize the matrix
     for i = 1:n
-        tMatrix[:,i+1] = t.^i
+        tMatrix[:,i+1] = t.^i                               # Fill in the matrix
     end
     return tMatrix
 end
