@@ -14,10 +14,14 @@ componentNames = ["O2",                                        # Component names
                    "NO",
                    "CH4",
                    "H2",
-                   "H2O"]
+                   "H2O",
+                   "NH3",
+                   "C2H4",
+                   "C2H2",
+                   "He"]
 numComponents   = length(componentNames)
 createPlot      = true                          # flag to switch plotting on/off
-polynomialOrder = 2                           # Order of the polynomial in cp(T)
+polynomialOrder = 20                           # Order of the polynomial in cp(T)
 p_ref           = 1.0e5                                # Reference pressure [Pa]
 p               = p_ref                                          # Pressure [Pa]
 T               = linspace(100,6000,5000)                      # Temperature [K]
@@ -33,7 +37,11 @@ files               = ["Oxygen_(O2)_O2(ref).csv",               # csv file names
                        "Nitrogen_Oxide_(NO)_N1O1(g).csv",
                        "Methane_(CH4)_C1H4(g).csv",
                        "Hydrogen_(H2)_H2(ref).csv",
-                       "Water_(H2O)_H2O1(g).csv"]
+                       "Water_(H2O)_H2O1(g).csv",
+                       "Ammonia_(NH3)_H3N1(g).csv",
+                       "Ethene_(C2H4)_C2H4(g).csv",
+                       "Ethyne_(C2H2)_C2H2(g).csv",
+                       "Helium_(He)_He1(ref).csv"]
 
 
 if createPlot

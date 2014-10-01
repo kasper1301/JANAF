@@ -1,6 +1,19 @@
 #!/usr/bin/python
 from string import ascii_uppercase
-def downloadJANAFtables(letters = ascii_uppercase, \
+def downloadJANAFtables(elements = ["H","He","Li","Be","B","C","N","O","F","Ne",
+                                    "Na","Mg","Al","Si","P","S","Cl","Ar","K",
+                                    "Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni",
+                                    "Cu","Zn","Ga","Ge","As","Se","Br","Kr",
+                                    "Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh",
+                                    "Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe",
+                                    "Cs","Ba","La","Ce","Pr","Nd","Pm","Sm",
+                                    "Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb",
+                                    "Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au",
+                                    "Hg","Tl","Pb","Bi","Po","At","Rn","Fr",
+                                    "Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm",
+                                    "Bk","Cf","Es","Fm","Md","No","Lr","Rf",
+                                    "Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn",
+                                    "Uut","Fl","Uup","Lv","Uus","Uuo"], \
                         numbers = range(1,1000), \
                         url     = "http://kinetics.nist.gov/janaf/html/", \
                         folder  = "txt/"):
@@ -9,9 +22,9 @@ def downloadJANAFtables(letters = ascii_uppercase, \
     A function that downloads the JANAF table for every component in the 
     database. 
     Input:
-        [letters]:      A list/string of identifying letters in the url of the 
+        [elements]:     A list/string of identifying letters in the url of the 
                         components.
-                        Defaults to [A-Z]
+                        Defaults to all the chemical elements
         [numbers]:      A list of identifying numbers in the url of the 
                         components.
                         Defaults to [1-999]
@@ -22,9 +35,9 @@ def downloadJANAFtables(letters = ascii_uppercase, \
                         Defaults to "txt/"
     '''
 
-    for letter in letters:                  # Loop through all the input letters
+    for element in elements:               # Loop through all the input elements
         for number in numbers:              # Loop through all the input numbers
-            ending      = letter + "-%03i"%int(number) + ".txt"     # URL ending
+            ending      = element + "-%03i"%int(number) + ".txt"    # URL ending
             currentURL  = url + ending                                # Full URL
             txtFile    = open(folder+ending, 'w')             # File for writing
             try:
@@ -35,4 +48,18 @@ def downloadJANAFtables(letters = ascii_uppercase, \
             txtFile.close()                                         # Close file
             
 if __name__=='__main__':
-    downloadJANAFtables()
+    #~ downloadJANAFtables()
+    downloadJANAFtables(elements = ["F", "Ne",
+                                    "Na","Mg","Al","Si","P","S","Cl","Ar","K",
+                                    "Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni",
+                                    "Cu","Zn","Ga","Ge","As","Se","Br","Kr",
+                                    "Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh",
+                                    "Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe",
+                                    "Cs","Ba","La","Ce","Pr","Nd","Pm","Sm",
+                                    "Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb",
+                                    "Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au",
+                                    "Hg","Tl","Pb","Bi","Po","At","Rn","Fr",
+                                    "Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm",
+                                    "Bk","Cf","Es","Fm","Md","No","Lr","Rf",
+                                    "Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn",
+                                    "Uut","Fl","Uup","Lv","Uus","Uuo"])
