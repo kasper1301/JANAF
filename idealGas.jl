@@ -81,7 +81,7 @@ function calculateIdealEntropy(T::Float64, T_ref::Float64, p, p_ref,
                                s_ref, cpCoeffs, x)
     #=
     Calculate ideal gas enthalpy of a mixture.
-    S_ig = x^T * s_ig(T) + R*log(x)
+    S_ig = x^T * (s_ig(T) + R*log(x))
     Input:
         T:          temperature [K]
         T_ref:      reference temperature [K]

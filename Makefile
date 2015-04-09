@@ -1,5 +1,3 @@
-all: run
-
 run: main vandermondeMatrix.jl calculatePolynomialCoefficients.jl polyFitHeatCapacity.jl
 	./main
 
